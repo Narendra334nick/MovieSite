@@ -8,7 +8,7 @@ export class navbar extends Component {
             <div className='navbar1'>
                 <span className="navElements"><Link to ='/'><h4>Home</h4></Link></span>
                 <span className="navElements"><Link to ='/favourite'><h4>Favourite</h4></Link></span>
-                <span className="navElements"><Link to ='/unfavourite'><h4>UnFavourite</h4></Link></span>
+                {/* <span className="navElements"><Link to ='/unfavourite'><h4>UnFavourite</h4></Link></span> */}
                 {/* <span>Unfavourite</span> */}
             </div>
         )

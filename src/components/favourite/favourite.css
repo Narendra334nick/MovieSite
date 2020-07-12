@@ -1,0 +1,12 @@
+.remove{
+    color:red;
+}
+
+.remove:hover{
+    cursor: pointer;
+}
+.fav{
+    display:grid;
+    grid-template-columns:auto auto auto auto;
+}
+

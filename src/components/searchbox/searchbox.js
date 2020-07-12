@@ -3,6 +3,17 @@ import { Button } from 'reactstrap';
 import '../searchbox/searchbox.css';
 import {withRouter} from "react-router-dom";
 
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i].imdbID === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 export class searchbox extends Component {
    
    constructor(props) {
@@ -82,25 +93,14 @@ export class searchbox extends Component {
         });
         var favArray = localStorage.getItem("fav");
         favArray = JSON.parse(favArray);
-        favArray.push(data);
+        const present = containsObject(id,favArray);
+        if(!present){
+            favArray.push(data);
+        }
         localStorage.setItem('fav',JSON.stringify(favArray));
         
     }
-
-    handleUnFav = (event)=>{
-        const id = event.target.id;
-       // console.log("from unfav handle",id);
-        const movie = this.state.array;
-        const data = movie.find(item=>{
-            return item.imdbID === id;
-        });
-        var unFavArray = localStorage.getItem("unfav");
-        unFavArray = JSON.parse(unFavArray);
-        unFavArray.push(data);
-        localStorage.setItem('unfav',JSON.stringify(unFavArray));
-       
-    }
-
+    
     showInfo = (event)=>{
         const id = event.target.id;
         //console.log("from showInfo",id);
@@ -145,7 +145,7 @@ export class searchbox extends Component {
                 </div> 
 
                 <div className='showInfo'>
-                    <Showdata state={this.state} handleFav={this.handleFav} handleUnFav={this.handleUnFav} showInfo={this.showInfo} />
+                    <Showdata state={this.state} handleFav={this.handleFav} handleRemove={this.handleRemove} showInfo={this.showInfo} />
                    
                 </div>
 
@@ -185,7 +185,8 @@ const Showdata =(props) => {
                             </div>
                                 <div>
                                     <span><i id={item.imdbID} className="fa fa-thumbs-up cursor" style={{fontSize:"36px",color:"red"}} onClick={props.handleFav}></i></span>&nbsp;&nbsp;&nbsp;
-                                    <span><i id={item.imdbID} className="fa fa-thumbs-down cursor" style={{fontSize:"36px"}} onClick={props.handleUnFav}></i></span>
+                                    {/* <span><i id={item.imdbID} className="fa fa-thumbs-down cursor" style={{fontSize:"36px"}} onClick={props.handleUnFav}></i></span> */}
+                                    
                                 </div>
                             </div>
                         
