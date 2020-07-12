@@ -12,7 +12,7 @@ export class movieinfo extends Component {
     async componentDidMount(){
         const id = sessionStorage.getItem('movieId');
         const apiKey = 10425274;
-        const url = `http://www.omdbapi.com/?i=${id}&apikey=${apiKey}`
+        const url = `https://www.omdbapi.com/?i=${id}&apikey=${apiKey}`
         const result = await fetch(url)
         const data = await result.json();
         //console.log(data);

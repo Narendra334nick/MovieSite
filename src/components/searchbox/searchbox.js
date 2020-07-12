@@ -44,9 +44,9 @@ export class searchbox extends Component {
         //console.log(title);
         const apiKey = 10425274;
         if(type ==="All"){
-            var url = `http://www.omdbapi.com/?s=${title}&apikey=${apiKey}`;
+            var url = `https://www.omdbapi.com/?s=${title}&apikey=${apiKey}`;
         }else{
-            var url = `http://www.omdbapi.com/?s=${title}&type=${type}&apikey=${apiKey}`;
+            var url = `https://www.omdbapi.com/?s=${title}&type=${type}&apikey=${apiKey}`;
         }
         
         fetch(url)
