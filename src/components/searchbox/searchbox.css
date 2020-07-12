@@ -1,0 +1,44 @@
+.searchbox{
+    padding-top:30px;
+    height: 10%;
+    /* border: 1px solid red; */
+    background-color: grey;
+}
+.showInfo{
+    height: 90%;
+    width: auto;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    /* border:1px solid blue; */
+    /* display: flex;
+    align-content: stretch; */
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.showInfo::-webkit-scrollbar { 
+ display: none; 
+} 
+
+.input{
+    display: inline-block;
+    width: 400px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+}
+
+.info{
+    color:blue;
+}
+.info:hover{
+    cursor: pointer;
+}
+
+.cursor{
+    color:red
+}
+
+.cursor:hover{
+    cursor: pointer;
+}
