@@ -13,8 +13,8 @@
     /* border:1px solid blue; */
     /* display: flex;
     align-content: stretch; */
-    /* overflow-x: hidden;
-    overflow-y: scroll; */
+    overflow-x: scroll;
+    /* overflow-y: scroll;  */
 }
 
 .showInfo::-webkit-scrollbar { 
@@ -37,9 +37,17 @@
 }
 
 .cursor{
-    color:red
+    color:black;
 }
 
 .cursor:hover{
+    cursor: pointer;
+}
+
+.red{
+    color: red;
+}
+
+.red:hover{
     cursor: pointer;
 }

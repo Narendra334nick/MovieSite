@@ -14,6 +14,7 @@ function containsObject(obj, list) {
     return false;
 }
 
+
 export class searchbox extends Component {
    
    constructor(props) {
@@ -54,6 +55,7 @@ export class searchbox extends Component {
     handleSubmit = async ()=>{
         const {title,type,year} = this.state
         //console.log(title);
+        var favArray = JSON.parse(localStorage.getItem('fav'));
         const apiKey = 10425274;
         if(type ==="All"){
             var url = `https://www.omdbapi.com/?s=${title}&y=${year}&apikey=${apiKey}`;
@@ -66,13 +68,18 @@ export class searchbox extends Component {
             return response.json(); 
         })
         .then((data)=>{
-            //console.log(data);
             if(data.Response ==="True"){
+                
+                data.Search.forEach((item)=>{
+                    item.redColor = false;
+                })
+                    
                 this.setState({
                     isLoaded:true,
                     array:data.Search,
                     error:false
                 })
+               
             }else{
                 this.setState({
                     isLoaded:false,
@@ -80,7 +87,7 @@ export class searchbox extends Component {
                     array:[]
                 })
             }
-           console.log(this.state);
+          console.log(this.state);
             
         })
     }
@@ -89,16 +96,39 @@ export class searchbox extends Component {
         const id = event.target.id;
         //console.log("from fav handle",id);
         const movie = this.state.array;
+        movie.forEach((item)=>{
+            if(item.imdbID === id){
+                item.redColor = !item.redColor;
+            }
+        });
+
+
         const data = movie.find(item=>{
             return item.imdbID === id;
         });
+       
+//        console.log(data);
+
         var favArray = localStorage.getItem("fav");
         favArray = JSON.parse(favArray);
+
         const present = containsObject(id,favArray);
         if(!present){
             favArray.push(data);
         }
+        // favArray.forEach((item)=>{
+        //     if(item.imdbID === id){
+        //         item.redColor = !item.redColor;
+        //     }
+        // });
+        //console.log("favarray",favArray);
+
+        
         localStorage.setItem('fav',JSON.stringify(favArray));
+        
+        this.setState({
+            array:movie
+        });
         
     }
     
@@ -198,7 +228,7 @@ const Showdata =(props) => {
                                 <span className="info" id={item.imdbID} onClick={props.showInfo}> {item.Title}:{item.Year} </span>
                             </div>
                                 <div>
-                                    <span><i id={item.imdbID} className="fa fa-thumbs-up cursor" style={{fontSize:"36px",color:"red"}} onClick={props.handleFav}></i></span>&nbsp;&nbsp;&nbsp;
+                                    <span><i id={item.imdbID} className={"fa fa-thumbs-up "+(item.redColor ? 'red' : 'cursor')} style={{fontSize:"36px"}} onClick={props.handleFav}></i></span>&nbsp;&nbsp;&nbsp;
                                     {/* <span><i id={item.imdbID} className="fa fa-thumbs-down cursor" style={{fontSize:"36px"}} onClick={props.handleUnFav}></i></span> */}
                                     
                                 </div>
