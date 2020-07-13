@@ -1,6 +1,7 @@
 .searchbox{
     padding-top:30px;
     height: 10%;
+    width: auto;
     /* border: 1px solid red; */
     background-color: grey;
 }
