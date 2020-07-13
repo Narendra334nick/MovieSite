@@ -22,6 +22,7 @@ export class searchbox extends Component {
        this.state = {
             title:"",
             type:"",
+            year:"",
             array:[],
             isLoaded:false,
             error:false
@@ -51,13 +52,13 @@ export class searchbox extends Component {
   
 
     handleSubmit = async ()=>{
-        const {title,type} = this.state
+        const {title,type,year} = this.state
         //console.log(title);
         const apiKey = 10425274;
         if(type ==="All"){
-            var url = `https://www.omdbapi.com/?s=${title}&apikey=${apiKey}`;
+            var url = `https://www.omdbapi.com/?s=${title}&y=${year}&apikey=${apiKey}`;
         }else{
-            var url = `https://www.omdbapi.com/?s=${title}&type=${type}&apikey=${apiKey}`;
+            var url = `https://www.omdbapi.com/?s=${title}&type=${type}&y=${year}&apikey=${apiKey}`;
         }
         
         fetch(url)
@@ -124,8 +125,21 @@ export class searchbox extends Component {
                         className="input"
                     />
                     &nbsp;&nbsp;&nbsp;&nbsp;
-        
                     <form style={{display:"inline-block",width:"100px",margin:"0 auto"}}>
+                        <div className="form-group"> 
+                            
+                            <input type="text"
+                            placeholder="Year"
+                            name="year"
+                            value={this.state.year}
+                            onChange={this.handleChange}
+                             className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                            {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
+                        </div>
+                    </form>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <form style={{display:"inline-block",width:"100px",margin:"0 auto"}}>
+                        
                         <div className="form-group">
                             <select className="form-control" id="exampleFormControlSelect1"
                             name="type"

@@ -5,15 +5,15 @@
     background-color: grey;
 }
 .showInfo{
-    height: 90%;
+    height: auto;
     width: auto;
     display: grid;
     grid-template-columns: auto auto auto auto;
     /* border:1px solid blue; */
     /* display: flex;
     align-content: stretch; */
-    overflow-x: hidden;
-    overflow-y: scroll;
+    /* overflow-x: hidden;
+    overflow-y: scroll; */
 }
 
 .showInfo::-webkit-scrollbar { 
