@@ -73,7 +73,17 @@ export class searchbox extends Component {
                 data.Search.forEach((item)=>{
                     item.redColor = false;
                 })
-                    
+
+                var favArray = JSON.parse(localStorage.getItem('fav'));
+                console.log(favArray);
+                for(var i=0;i<favArray.length;i++){
+                    for(var j=0;j<data.Search.length;j++){
+                        if(favArray[i].imdbID == data.Search[j].imdbID){
+                            data.Search[j].redColor = true;
+                        }
+                    }
+                }
+
                 this.setState({
                     isLoaded:true,
                     array:data.Search,
@@ -87,42 +97,50 @@ export class searchbox extends Component {
                     array:[]
                 })
             }
-          console.log(this.state);
+         // console.log(this.state);
             
         })
     }
 
     handleFav = (event)=>{
         const id = event.target.id;
-        //console.log("from fav handle",id);
+        //fetched data from omdb site
         const movie = this.state.array;
+        
+        //changing the color of thumb by making redColor true
         movie.forEach((item)=>{
             if(item.imdbID === id){
                 item.redColor = !item.redColor;
             }
         });
 
-
+        
         const data = movie.find(item=>{
             return item.imdbID === id;
         });
-       
-//        console.log(data);
 
         var favArray = localStorage.getItem("fav");
         favArray = JSON.parse(favArray);
 
         const present = containsObject(id,favArray);
-        if(!present){
+        
+        if(present){
+            for(var i=0;i<favArray.length;i++){
+                if(favArray[i].imdbID === id && favArray[i].redColor === true){
+                   favArray[i].redColor = false;
+                }
+            }
+        }else{
             favArray.push(data);
         }
-        // favArray.forEach((item)=>{
-        //     if(item.imdbID === id){
-        //         item.redColor = !item.redColor;
-        //     }
-        // });
-        //console.log("favarray",favArray);
 
+        
+        //removing false value
+        for(var i=0;i<favArray.length;i++){
+            if(favArray[i].redColor === false){
+                favArray.splice(i,1);
+            }
+        }
         
         localStorage.setItem('fav',JSON.stringify(favArray));
         
@@ -134,8 +152,6 @@ export class searchbox extends Component {
     
     showInfo = (event)=>{
         const id = event.target.id;
-        //console.log("from showInfo",id);
-        //console.log(id);
         sessionStorage.setItem('movieId',id);
         setTimeout(()=>{
             this.props.history.push('/movieInfo');
