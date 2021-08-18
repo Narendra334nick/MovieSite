@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
 import '../searchbox/searchbox.css';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import InputField from '../../globalComponents/InputTextField/index';
+import { Grid,Button } from "@material-ui/core";
 
 function containsObject(obj, list) {
     var i;
@@ -31,7 +32,7 @@ export class searchbox extends Component {
    }
    
     componentDidMount(){
-        if(localStorage.length === 0){
+        if(localStorage && localStorage.length === 0){
             console.log('empty');
             var favArray = [];
             var unFavArray = [];
@@ -75,15 +76,16 @@ export class searchbox extends Component {
                 })
 
                 var favArray = JSON.parse(localStorage.getItem('fav'));
-                console.log(favArray);
-                for(var i=0;i<favArray.length;i++){
-                    for(var j=0;j<data.Search.length;j++){
-                        if(favArray[i].imdbID == data.Search[j].imdbID){
-                            data.Search[j].redColor = true;
+                console.log("favArray",favArray);
+                if(favArray){
+                    for(var i=0;i<favArray.length;i++){
+                        for(var j=0;j<data.Search.length;j++){
+                            if(favArray[i].imdbID === data.Search[j].imdbID){
+                                data.Search[j].redColor = true;
+                            }
                         }
                     }
                 }
-
                 this.setState({
                     isLoaded:true,
                     array:data.Search,
@@ -102,7 +104,7 @@ export class searchbox extends Component {
         })
     }
 
-    handleFav = (event)=>{
+    handleFav = async (event) =>{
         const id = event.target.id;
         //fetched data from omdb site
         const movie = this.state.array;
@@ -119,8 +121,9 @@ export class searchbox extends Component {
             return item.imdbID === id;
         });
 
-        var favArray = localStorage.getItem("fav");
+        var favArray = await localStorage.getItem("fav");
         favArray = JSON.parse(favArray);
+        console.log("favArray",favArray)
 
         const present = containsObject(id,favArray);
         
@@ -161,52 +164,51 @@ export class searchbox extends Component {
     render() {
      
         return (
-            <div style={{height:"1000px"}} >
-                <div className="searchbox">
-                    <input type="text"
-                        placeholder='Movie Title'
-                        onChange = {this.handleChange}
-                        name = "title"
-                        value={this.state.title}
-                        className="input"
-                    />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <form style={{display:"inline-block",width:"100px",margin:"0 auto"}}>
-                        <div className="form-group"> 
-                            
+            <div style={{margin:"8px"}}>
+                    <Grid container spacing={3} m={8}>
+                        <Grid item xs={12} sm={5} md={5}>
                             <input type="text"
-                            placeholder="Year"
-                            name="year"
-                            value={this.state.year}
-                            onChange={this.handleChange}
-                             className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
-                            {/* <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> */}
-                        </div>
-                    </form>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <form style={{display:"inline-block",width:"100px",margin:"0 auto"}}>
-                        
-                        <div className="form-group">
-                            <select className="form-control" id="exampleFormControlSelect1"
-                            name="type"
-                            value={this.state.type}
-                            onChange={this.handleChange}>
-                                <option>All</option>
-                                <option>Movie</option>
-                                <option>Series</option>
-                                <option>Episodes</option>
-                            </select>
-                        </div>
-                    </form>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    
-                    <Button color="primary" onClick={this.handleSubmit}>Search</Button>{' '}
-
-                </div> 
-
+                                placeholder="Movie Name"
+                                name="title"
+                                value={this.state.title}
+                                onChange={this.handleChange}
+                                className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={3} md={3}>
+                            <input type="text"
+                                placeholder="Year"
+                                name="year"
+                                value={this.state.year}
+                                onChange={this.handleChange}
+                                className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={2} md={2}>
+                            <div className="form-group">
+                                <select className="form-control" id="exampleFormControlSelect1"
+                                name="type"
+                                value={this.state.type}
+                                onChange={this.handleChange}>
+                                    <option>All</option>
+                                    <option>Movie</option>
+                                    <option>Series</option>
+                                    <option>Episodes</option>
+                                </select>
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} sm={2} md={2}>
+                            <Button 
+                                onClick={this.handleSubmit}
+                                variant="contained" 
+                                color="primary"
+                            >
+                                Search
+                            </Button>
+                        </Grid>
+                    </Grid>
                 <div className='showInfo'>
                     <Showdata state={this.state} handleFav={this.handleFav} handleRemove={this.handleRemove} showInfo={this.showInfo} />
-                   
                 </div>
 
             </div>
@@ -218,40 +220,44 @@ export default withRouter(searchbox);
 
 
 const Showdata =(props) => {
-   // console.log(props);
+
     const {error,isLoaded,array} = props.state;
-    //console.log(error,isLoaded,array);
+
     if(error){
         return(
             <div style={{display:"flex",justifyContent:"center",alignItems:"centre"}}>
-                <h2>No Data Found</h2>
+                <h2>No Data Found...</h2>
             </div>
         )
     }else if(!isLoaded){
         return(
-            <div style={{display:"flex",justifyContent:"center"}}><h4>Search A Movie Name/Series/Episode</h4></div>
+            <div><h4>Search A Movie Name/Series/Episode...</h4></div>
         )
     }else{
         return(
             <React.Fragment>
+                <Grid container spacing={1}>
                  {
                         
                         array.map(item=>(
+                            <Grid item xs={12} sm={6} md={3}>
                                 
-                            <div key={item.imdbID} style={{display:"inline-block",height:'350px',width:"250px",margin:"20px",border:"1px solid",paddingTop:"3px"}}>
-                            <img src={item.Poster} style={{height:"250px",width:"190px"}} alt=""></img>
-                            <div>
-                                <span className="info" id={item.imdbID} onClick={props.showInfo}> {item.Title}:{item.Year} </span>
-                            </div>
+                                <div key={item.imdbID} style={{display:"inline-block",height:'350px',width:"250px",margin:"20px",border:"1px solid",paddingTop:"3px"}}>
+                                    <img src={item.Poster} style={{height:"250px",width:"190px"}} alt={item.Title} className="hover-zoom"></img>
                                 <div>
-                                    <span><i id={item.imdbID} className={"fa fa-thumbs-up "+(item.redColor ? 'red' : 'cursor')} style={{fontSize:"36px"}} onClick={props.handleFav}></i></span>&nbsp;&nbsp;&nbsp;
-                                    {/* <span><i id={item.imdbID} className="fa fa-thumbs-down cursor" style={{fontSize:"36px"}} onClick={props.handleUnFav}></i></span> */}
-                                    
+                                    <span className="info" id={item.imdbID} onClick={props.showInfo}> {item.Title}:{item.Year} </span>
                                 </div>
-                            </div>
+                                    <div>
+                                        <span><i id={item.imdbID} className={"fa fa-thumbs-up "+(item.redColor ? 'red' : 'cursor')} style={{fontSize:"36px"}} onClick={props.handleFav}></i></span>&nbsp;&nbsp;&nbsp;
+                                        {/* <span><i id={item.imdbID} className="fa fa-thumbs-down cursor" style={{fontSize:"36px"}} onClick={props.handleUnFav}></i></span> */}
+                                        
+                                    </div>
+                                </div>
+                            </Grid>
                         
                         ))
                     }   
+                 </Grid>    
             </React.Fragment>
         )
     }

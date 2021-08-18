@@ -1,19 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import './App.css';
-import NavBar from './components/navbar/navbar';
 import SearchBox from './components/searchbox/searchbox';
 import Favourite from './components/favourite/favourite';
 import UnFavourite from './components/unfavourite/unfavourite';
 import MovieInfo from './components/movieInfo/movieinfo';
+import Header from './components/Header/header';
 
 
 function App() {
   return (
     <div className="App">
      <Router>
-            <NavBar/>
-            
+            <Header />
             <Switch>
               <Route exact path='/'>
                 <SearchBox/>
@@ -22,8 +21,6 @@ function App() {
               <Route path='/favourite'><Favourite /></Route>
               <Route path='/unfavourite'><UnFavourite /></Route>
               <Route path='/movieInfo'><MovieInfo /></Route>
-              
-
             </Switch>
         </Router>  
     </div>

@@ -3,10 +3,10 @@
     height: 10%;
     width: auto;
     /* border: 1px solid red; */
-    background-color: grey;
+    /* background-color: grey; */
 }
 .showInfo{
-    height: auto;
+    /* height: auto; */
     width: auto;
     display: grid;
     grid-template-columns: auto auto auto auto;
@@ -51,3 +51,11 @@
 .red:hover{
     cursor: pointer;
 }
+
+
+.img-wrapper{
+    overflow:hidden;
+  }
+  img.hover-zoom:hover {
+    transform: scale(1.50);
+  }
